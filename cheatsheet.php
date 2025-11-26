@@ -115,5 +115,6 @@ if ($vek < 15) {
     } else { // Samotný else BEZ ZAVOREK () !!
         //... pokud neplatí ani jeden
     }
+    echo "česrnoch";
 
 }
