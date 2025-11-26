@@ -116,5 +116,6 @@ if ($vek < 15) {
         //... pokud neplatí ani jeden
     }
     echo "česrnoch";
+    echo "Pepa z Depa";
 
 }
