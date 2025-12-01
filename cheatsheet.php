@@ -102,24 +102,6 @@ if ($slozene) {
 }
 
 // Příklady else{} a podmínky v podmínkce
-$vek = 55;
-if ($vek < 15) {
-    echo 'dítě';
-} else { // Čistý else v případě ze neplatí if()
-
-    if ($vek < 15) {
-        echo 'teenager';
-    } else if ($vek > 18) { // Druhá podmínka když neplatí if
-        echo 'dospělí';
-        
-    } else { // Samotný else BEZ ZAVOREK () !!
-        //... pokud neplatí ani jeden
-    }
-    echo "česrnoch";
-    echo "Pepa z Depa";
-
-}
-
 
 
 ////////////////////////////////////////////
