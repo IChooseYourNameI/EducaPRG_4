@@ -1,313 +1,192 @@
 <?php
-/****---------------------****/
-/***     TAHÁK (v1.5.0)    ***/
-/**-------------------------**/
-/**                         
- *  Základní tahákový mustr, takových najdete na internetu mnoho.
- *  Zde naleznete ty základy co jsme probírary a budou se vám hodit. Taky něco navíc (označeno pluskem //+)
- *  Je důležité si uvědomovat že vše vždy běží od zvrchu dolů "řádek po řádku" !
- *  Přemyšlet nad tím co dělám a čeho chci dosáhnout je klíčové, aby jsme si mohli uvědomit jaké struktury/nástroje k tomu máme dostupné !!!
- *  Popřípadě vždy stačí vygooglit specifiký problém/pojem a máme 🙌
- *  Nejlepší je si vždy spustit/otestovat to čemu nerozumím a od tamtud hledat o co se jedná dál...
+/**
+ * PHP Cheat Sheet pro Visual Studio Code
+ * 
+ * Jak používat:
+ * 1. Otevři tento soubor ve Visual Studio Code
+ * 2. Nainstaluj extension "PHP Intelephense" – krásně ti zvýrazní kód i komentáře
+ * 3. Spusť přes XAMPP / Laragon / nebo php -S localhost:8000
+ * 4. Všechny otázky zodpovíš jen z komentářů vedle kódu (žádné samostatné sekce)
+ * 5. Každý příklad je plně funkční – můžeš ho hned vyzkoušet
+ * 
+ * Tip: Použij Ctrl + klik na sekci pro rychlé složení/rozložení komentářů
  */
 
-///  Vypsání do console či prohlížeče   ///
-echo ("Toto je muj vypsaný String!"); // nebo s proměnou echo($prom)
-// Taky máme...
-print_r($echo);
-print_r($prom);
-print_r(["Tady", "muzu", "vypsat", "třeba", "pole"]);
-var_dump(1.2); //+ Vypíše typ a obsah proměnné => float(1.2)
+echo "<pre style='font-family: Consolas; font-size: 16px; line-height: 1.6;'>";
+echo "<h1>PHP Cheat Sheet – praktické příklady s komentáři vedle kódu</h1>\n\n";
 
+// ======================================================
+// Webový server a PHP
+// ======================================================
+echo "Toto vidíš, protože PHP běží přes webový server!";   // Rozdíl mezi spuštěním v konzoli a skrze server:
+                                                          // Konzole: php soubor.php → výstup do terminálu, žádné $_GET/$_POST
+                                                          // Server: http://localhost/soubor.php → máš $_GET, $_POST, HTTP headery, HTML výstup
+                                                          // Co je webový server? Apache (sám), XAMPP/WAMP = Apache + MySQL + PHP v jednom balíčku pro lokální vývoj
+                                                          // Jaký soubor konfiguruje PHP? php.ini (např. C:\xampp\php\php.ini) – nastavuje chyby, limity uploadu atd.
+                                                          // Jak vkládáme PHP do HTML? <?php kód ?> nebo <?= výraz ?> přímo mezi HTML tagy
 
-///////////////////////////////////////////////////
-///     PROMĚNNÉ - jednoduché datové typy      ///
-///////////////////////////////////////////////////
+// ======================================================
+// Proměnné a syntaxe
+// ======================================================
+$jmeno = "Anna";               // Deklarace proměnných: vždy začínají $, žádný typ není potřeba
+$vek   = 25;                   // Změna hodnot: základní operátory
+$vek += 5;                     // +=  → $vek je teď 30
+$vek++;                        // ++   → $vek je teď 31
+$cena  = 199.90;               // Základní typy: string, integer, float
+$isStudent = true;             // boolean
+$pole = [];                    // složitější typ: array
+$objekt = new stdClass();      // složitější typ: object
+echo "$jmeno má $vek let\n";   // Vypisování typů:
+                               // gettype($vek) → "integer"
+                               // var_dump($vek) → int(31)  (podrobné info)
+                               // Kód teče shora dolů, větvíme ho podmínkami a cykly
 
-// Pravdivostní
-$jeStudent = true; //  true || false
+// ======================================================
+// Datové typy a přetypování (casting)
+// ======================================================
+$text = "42";                  // string
+$cislo = (int)$text;           // Přetypování (casting) na integer → $cislo je teď 42 (typ integer)
+$desetinne = (float)"3.14";    // Přetypování na float
+$pravda = (bool)1;             // Přetypování na boolean → true
+echo "Přetypováno: $cislo\n";  // PHP automaticky přetypovává, ale ruční casting je bezpečnější
 
-//+ NULLová hodnota (alias "nic")
-$prazdna_hodnota = null;
-$prazdna_hodnota; // vytvoří prázdnou proměnnou
+// ======================================================
+// Podmínky + Operátory
+// ======================================================
+if ($vek < 13) {                          // Struktura if
+    echo "Dítě\n";
+} elseif ($vek < 18) {                    // elseif
+    echo "Teenager\n";
+} else {                                  // else
+    echo "Dospělý\n";
+}                                         // switch příklad:
+$barva = "zelená";                        // 
+switch ($barva) {                         // 
+    case "červená": echo "STOP\n"; break; // 
+    case "zelená":  echo "JEĎ\n";  break; // 
+    default:        echo "Čekej\n";       // 
+}                                         // Logické operátory: && (and), || (or)
+                                          // Porovnávací: <= >= == === != !==
+$a = 10; $b = "10";                       // Operátory +, -, *, /, %, ., &&, ||, <=, >=
+echo $a + 5 . "\n";                       // + → 15
+echo $a == $b ? "== rovné\n" : "";        // == porovnává hodnotu (true)
+echo $a === $b ? "" : "=== nerovné\n";    // === porovnává hodnotu + typ (false)
+                                          // Rozdíl == a = : = je přiřazení, == je porovnání
 
-// Číselné hodnoty [ INT, FLOAT ]
-$vek = 24;
-$desetine = 5.879;
-$pi3_14 = pi(); //+ funkce matematická hodnota PI 
+// ======================================================
+// Pole
+// ======================================================
+$ovoce = ["jablko", "hruška", "banán"];   // Indexované pole – inicializace a indexování
+$ovoce[] = "pomeranč";                    // Přidání na konec
+echo $ovoce[1] . "\n";                    // Výběr z pole → hruška (index 1)
+                                          // Procházení for:
+for ($i = 0; $i < count($ovoce); $i++) {  // 
+    echo "for: " . $ovoce[$i] . "\n";     // 
+}                                         // Procházení foreach:
+foreach ($ovoce as $o) {                  // 
+    echo "foreach: $o\n";                 // 
+}                                         // Asociativní (jmenná) pole:
+$uzivatel = [                             // 
+    "jmeno" => "Petr",                    // 
+    "vek"   => 30,                        // 
+    "mesto" => "Praha"                    // 
+];                                        // 
+echo $uzivatel["mesto"] . "\n";           // Přístup přes klíč → Praha
 
-// Řetězec (String)
-$string = "Ahoj jak se máš";
-
-// Pole jako seznam věcí (Array)
-$zaci = [6, 5, 9, 1, 3];
-$zaci = [123, "neco", false, pi(), $vek];
-
-//+ Konstanta - nezměnitelná hodnota bez dolaru $
-define('HESLO_DO_DATABAZE', "123456789");
-echo HESLO_DO_DATABAZE;
-
-
-
-///////////////////////////////////////////////////
-///     OPERACE - manipulace s dat. typy       ///
-///////////////////////////////////////////////////
-
-// Počítání s čísly
-$vysledek = $cele + 5; //  + - * - 
-$zbytek = 13 % 5; // znak modulo -> zbytek po deleni
-$v = 3 + 6 - ($cislo * 3) / $desetine;
-$v = pow($zaklad, $mocnina); //+ Mocnina
-$squareRoot = sqrt($zaklad); //+ Druhá odmocnina
-// Zaokrouhlujeme round(), zaokr. nahoru ceil() a dolu floor()
-// Modifikace proměnné [ +=  -=  /=  *= ]
-$desetine += 10.2; // přičte a uloží
-$desetine /= 2; // vydělí a uloží
-$desetine++; $desetine--; // Přídá / Odebere pouze jedničku
-
-// Manipulace s řetězci
-$jmeno = "Pavle"; // Uvozovky dvojího typu ( " / ' )
-$jmeno = 'Pavle';
-$pozdrav = "Hello" . "World" . "<br>"; // Skládání tečkou (A . B)
-// Skládání s proměnou
-$pozdrav = "Ahoj, jak se máš " . $jmeno;
-//+ Vložená proměnná (! pozor funguje pouze u dvojtých uvozovek)
-$pozdrav = "Ahoj, jmenuji se $jmeno. Je mi $vek,";
-
-// Modifikace proměnné [ .= ]
-$pozdrav .= " bydlím na moravě a tancuju polku.";
-
-
-
-////////////////////////////////////////////
-///     PODMÍNKY - logické operace       ///
-////////////////////////////////////////////
-// Podmínka dokáže pouze pracovat s pravdou/nepravdou
-// Musím tedy nakládat s operátory porovnávání nebo skládat logické operátopry
-// Např.: == (rovnost), != (nerovno), > (vetší), <= (menší a rovno)
-
-// Logické operátory (jako v matematice výroky)
-$pravda = true;
-$nepravda = false;
-$and = $pravda && $nepravda; // OBA musí být pravdou
-$or = $pravda || $nepravda; // ALESPON JEDEN musí být pravdou
-// Také můžeme skládat pomocí závorek ()
-$maPropustku = false;
-$slozene = ($pass == "heslo" && $vek >= 21) || $maPropustku;
-
-
-if ($slozene) {
-    // Kód vykonaný v případě pravdy if,
-    // pokud je nepravdívý, blok je přeskočen!
+// ======================================================
+// Cyklus
+// ======================================================
+echo "Sudá čísla 0-20:\n";                      // Rozdíly: for = známý počet, while = dokud podmínka,
+for ($i = 0; $i <= 20; $i += 2) echo "$i ";    // foreach = jen pro pole
+echo "\nNásobky 3 do 30:\n";                    // Nekonečný cyklus = podmínka nikdy false
+$i = 3;                                         // (např. while(true) bez break)
+while ($i <= 30) {                              // 
+    echo "$i ";                                 // 
+    $i += 3;                                    // 
+}                                               // 
+echo "\n2D trojúhelník:\n";                     // 
+for ($radek = 1; $radek <= 5; $radek++) {       // 
+    for ($hv = 1; $hv <= $radek; $hv++) {       // 
+        echo "* ";                              // 
+    }                                           // 
+    echo "\n";                                  // 
 }
 
-// Příklady else{} a podmínky v podmínkce
+// ======================================================
+// Funkce
+// ======================================================
+function pozdrav($jmeno, $vek = 20) {     // Definice funkce, vstupní parametry (attributy)
+    return "Ahoj $jmeno, je ti $vek let.\n"; // return = výstup funkce
+}                                         // Využití: opakovaně voláme stejný kód
+echo pozdrav("Karel");                    // výchozí věk 20
+echo pozdrav("Lucie", 35);                // přepsaný věk
 
+// ======================================================
+// Vestavěné funkce
+// ======================================================
+$text = "  Ahoj světe!  ";                     // 3 aplikované vestavěné funkce
+echo trim($text) . "\n";                       // trim() – odstraní mezery z kraje
+echo strlen($text) . "\n";                     // strlen() – délka řetězce (z hlavy)
+$poleF = explode(" ", trim($text));            // explode() – rozdělí řetězec na pole
+echo count($poleF) . "\n";                     // count() – počet prvků v poli (z hlavy)
+                                               // Další na https://www.w3schools.com/php/php_ref_overview.asp
 
-////////////////////////////////////////////
-///     FUNKCE - opakovatelný kód       ///
-////////////////////////////////////////////
-// Funkce mají název, vstupní hodnoty (argumenty)
-// a výstupní hodnotu vrácenou pomocí "return"
+// ======================================================
+// GIT vs GitHub
+// ======================================================
+echo "GIT = lokální správa verzí, GitHub = web pro sdílení\n";
+                                          // git init → vytvoří repozitář
+                                          // git add . → přidá změny
+                                          // git commit -m \"popis\" → uloží změny
+                                          // Merge konflikty = dva lidé upravili stejný řádek jinak
+                                          // CI/CD = automatické testování a nasazování (GitHub Actions)
 
-
-// Příklad funkce:
-function funkceBankomatu($pin, $kolikVybyrame)
-{
-    if ($pin === "123") {
-        return $kolikVybyrame;
-    }
-
-    return null; // Nevybral nic
-}
-// Pak pomocí jména můžeme volat kolikrát chceme
-funkceBankomatu("333", 500);
-funkceBankomatu("768", 20);
-funkceBankomatu("789", 100);
-funkceBankomatu("123", 5);
-
-// Někdy funkce nemusí mít argumenty..
-$ciselnyCas = time(); //+ time() vrací pouze aktuální čas jako jedno číslo.. nic víc
-
-
-
-////////////////////////////////////////////
-///     CYKLY - looping / opakování      ///
-////////////////////////////////////////////
-// Cyklus je jako podmínka jenom se jeji obsah může vykonat víckrát
-// Základní cyklus je while()
-while ($dokudPravda) {
-    // ZDE Kód,
-    // Co
-    // Se
-    // Opakuje! dokud platí podmínka
-}
-// Např.:
-$pocitadlo = 10;
-while ($pocitadlo != 0) {
-    echo $pocitadlo; // Vypíše každé druhé číslo od 10
-    $pocitadlo -= 2; // Kdybychom hodnotu nezměnily nikdy by cyklus nepřestal
-}
-echo "Vypíše se pouze jendou"; // Cyklus skončí } a pokračuje
-
-///////////////////
-///  for cykly  ///
-///////////////////
-// Pro lepší ovládání používáme "for loops"
-for ($pocitadlo = 10; $pocitadlo != 0; $pocitadlo--) {
-    echo $pocitadlo . "<br>"; // Vypíše každé číslo na řádek
-}
-
-#
-##
-###
-####
-// Příklad: Cyklus v Cyklu (2-render stromeček)
-$znakPixelu = '#';
-$vyska = 5;
-for ($radky = 0; $radky < $vyska; $radky++) {
-    // Bude víc a víc znaku na řáešk podle toho kolikátý řádek toe
-    $kolikZnakuNaRadek = $radky + 1;
-
-    for ($linka = 0; $linka < $kolikZnakuNaRadek; $linka++) {
-        // Na kazdem probehne cyklu pro vypsání znaků za sebou
-        echo $znakPixelu;
-    }
-
-    // Po dokončení znaků na řádku zakončíme a jdeme na další
-    echo '<br>';
-}
-// !nad tímto příkladem je ukázka stromečku/trojúhelníku ze znaků
-
-
-
-//////////////////////////////////////
-///     POLE - list / seznam      ///
-/////////////////////////////////////
-/// DŮLEŽITÝ Koncept! - vše je založené na polých (anglicky ARRAY)
-// Můžeme sepsat uživatele, produkty, itemy nebo čísla ke spočítání výdělků
-$cisla = [3, 7, 9, 1, 10];
-$jmena = ["Pepa", "Anna", "Greq"];
-
-// Vloží nový prvek na konec!
-$jmena[] = "Honza"; // ["Pepa", "Anna", "Greq", "Honza"]
-
-// Ke konkrétnímu prvku pole přistoupíme takto
-$jmena[0]; // nultý index je první člen/prvek
-// Můžeme..
-$jmena[0] = "Pepina"; // změní prvek 
-$jmena[0] *= "Pepina"; // vynásobit (vydelit, secist, odecist, atd..)
-
-// Pozor na rozdíl !!!
-print_r($jmena[0]); // vypíše prvního => "Pepa"
-print_r($jmena); // nebo vypíšeme celé pole ["Pepa", "Anna", "Greq"]
-
-
-///     JAK RUČNĚ VYPSAT POLE      ///
-$pocet = count($jmena);
-for ($index = 0; $index < $pocet; $index++) {
-    echo "Jmeno: " . $jmena[$index] . "je na indexu" . $index;
-    echo "<br>";
-}
-
-
-///     JAK SEČÍST POLE      ///
-$pocetCisel = count($cisla);
-$celkem = 0; // zacneme na nule a budeme přičítat
-for ($i = 0; $i < $pocetCisel; $i++) {
-    $prvek = $cisla[$i];
-    $celkem += $prvek;
-}
-echo "Součet: " . $celkem;
-echo "Průměr: " . ($celkem / $pocetCisel);
-
-
-/////////////
-// FOREACH //
-/////////////
-// Namísto klasického for() použijeme foreach($array as $prvek)
-// Jednoduší stavba, ale menší kontrola na cyklem
-foreach ($jmena as $konkretniJmeno) {
-    echo $jmeno . ', '; // Vypíšeme včechny prvky
-}
-
-
-///     JAK SEČÍST POLE      ///
-// Oproti kódu for() je jednodužší (viz. víše)
-$celkem = 0;
-foreach ($jmena as $prvek) {
-    $celkem += $prvek;
-}
-
-/////////////
-//  ASSOC  //
-/////////////
-// Asociativní / Jmenné  pole 
-// Pojmenováváme si indexy jinak než číslem
-
-// Např.:
-$player = [
-    "xp" => 210,
-    "name" => "Jorban",
-    "type" => "Mage",
-    "gold" => 5,
-];
-// K prvkům přístupujeme stejne jako normálně a používame uvozovky
-echo "Vítej" . $player["name"] . " na tréningu (poplatek 5$ + 10xp)";
-$player['gold'] -= 5;
-$player["xp"] += 10;
-
-
-// ZDE je vhodný foreach! nebo když nevíme jak budou číslové prvky
-$vyskyZaku = [
-    "Jirka" => 172,
-    "Anna" => 165,
-    "Honza" => 187,
-    "Dan" => 150,
-];
-$minimum = 170;
-foreach ($vyskyZaku as $vyska) {
-    // Když najdeme vyššího žáka nez minimum
-    if ($vyska >= $minimum) {
-        echo 'může na tobogán';
+// ======================================================
+// HTML a Formuláře
+// ======================================================
+?>                                        <!-- HTML základ: tagy <tag>obsah</tag> -->
+<form method="post" action="">            <!-- Formulář odesílá data do PHP -->
+    Jméno: <input type="text" name="jmeno"><br><br>
+    Věk: <input type="number" name="vek"><br><br>
+    <button type="submit" name="odeslat">Odeslat</button>
+</form>
+<a href="?jmeno=Tomáš&vek=25">GET příklad (klikni)</a><br><br>
+<?php
+                                          // $_GET = data v URL (viditelné), $_POST = skrytá data
+if (isset($_POST["odeslat"])) {           // isset() kontroluje existenci
+    $jmeno = $_POST["jmeno"] ?? "";       // Validace:
+    $vek   = $_POST["vek"] ?? 0;          // porovnání == <= >=, empty(), is_numeric()
+    if ($jmeno !== "" && is_numeric($vek) && $vek >= 0 && $vek <= 150) {
+        echo "POST: Ahoj $jmeno, je ti $vek let.\n";
     } else {
-        echo 'není to bezpečné';
+        echo "Chyba ve validaci!\n";
     }
 }
+if (!empty($_GET)) {                      // GET příklad
+    $jmeno = $_GET["jmeno"] ?? "";
+    $vek   = $_GET["vek"] ?? "";
+    echo "GET: Ahoj $jmeno, je ti $vek let.\n";
+}
 
-///////////////////
-//  POLE v POLY  //
-//////////////////
-// NAPŘÍKLAD - piškvorky hra
-$pole_2d = [
-    [' ', 'x', 'O'],
-    ['O', 'x', 'O'],
-    [' ', ' ', ' '],
-];
-// 2D jako v matematice [x, y]
-$pole_2d[2][1] = 'x'; // nastavime na pozici [2, 1] 
+// ======================================================
+// Práce se soubory (TXT, CSV, XML)
+// ======================================================
+file_put_contents("pokus.txt", "Ahoj z PHP!\nDnes: " . date("d.m.Y"));  // file_put_contents() – zápis do TXT
+echo file_get_contents("pokus.txt") . "\n";                            // file_get_contents() – čtení TXT
 
+$csv = "Jan,30,Praha\nPetr,25,Brno";                                   // CSV příklad
+file_put_contents("uzivatele.csv", $csv);                              // 
+$radky = file("uzivatele.csv");                                        // 
+foreach ($radky as $r) {                                               // 
+    list($jmeno, $vek, $mesto) = str_getcsv($r);                       // 
+    echo "$jmeno ($vek) – $mesto\n";                                   // 
+}                                                                      // 
 
-// ASSOC pole v poly - Např.: Databáze knih
-$kniha1 = [
-    "id" => 1,
-    "jmeno" => "Romeo a Julie",
-    "stranek" => 210,
-];
-$kniha1 = [
-    "id" => 2,
-    "jmeno" => "Pán prstenů",
-    "stranek" => 323,
-];
-$kniha3 = [
-    "id" => 3,
-    "jmeno" => "Krakatit",
-    "stranek" => 190,
-];
+$xml = "<uzivatele><osoba>Anna</osoba></uzivatele>";                   // XML příklad
+file_put_contents("data.xml", $xml);                                   // 
+$xmlObj = simplexml_load_file("data.xml");                             // 
+echo "XML hodnota: " . $xmlObj->osoba . "\n";                           // 
 
-$knihovna = [$kniha1, $kniha2, $kniha3];
-// Přídáme jmén o autora ke knize "Krakatit"
-$knihovna[0]; // vyber je pouze kniha1
-$knihovna[0]["id"]; // vybere kniha1 a potom id
-$knihovna[2]["stranek"] = 200; // Nastavim prvek v prvku
-
+echo "\nHotovo! Vše funguje – stačí aktualizovat stránku a vyzkoušet formulář.";
+echo "</pre>";
+?>
